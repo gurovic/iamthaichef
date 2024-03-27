@@ -1,15 +1,16 @@
 from django.db import models
-
-
+from mptt.models import MPTTModel, TreeForeignKey
 # Create your models here.
+
 
 # Category 1->* ... 1->* Category -> Dish 1->*    Dish variation 1->* Recipe
 # Soup ->     Without noodles -> Tom Yum -> Tom Yum Goong -> from pailin
-class Category(models.Model):
+class Category(MPTTModel):
     title = models.CharField(max_length=200)
     thai_title = models.CharField(max_length=200, blank=True, null=True)
     thai_transcript_name = models.CharField(max_length=200, blank=True, null=True)
-    parent = models.ForeignKey("Category",  blank=True, null=True, on_delete=models.CASCADE)
+    parent = TreeForeignKey('self',  blank=True, null=True, on_delete=models.CASCADE,
+                            related_name='children')
 
     def __str__(self):
         return self.title
