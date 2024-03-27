@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django_mptt_admin.admin import DjangoMpttAdmin
-from .models import Category, Dish, Variant, Source, Recipe
+from .models import Category, Source, Recipe
 
 
 class CategoryAdmin(DjangoMpttAdmin):
@@ -8,7 +8,5 @@ class CategoryAdmin(DjangoMpttAdmin):
 
 
 admin.site.register(Category, CategoryAdmin)
-admin.site.register(Dish)
-admin.site.register(Variant)
 admin.site.register(Source)
 admin.site.register(Recipe)

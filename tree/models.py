@@ -13,28 +13,13 @@ class Category(MPTTModel):
                             related_name='children')
 
     def __str__(self):
-        return self.title
+        return f"{self.title} #{self.id}"
+
+    class Meta:
+        verbose_name_plural = "categories"
 
 
-class Dish(models.Model):
-    title = models.CharField(max_length=400)
-    thai_title = models.CharField(max_length=400, blank=True, null=True)
-    thai_transcript_name = models.CharField(max_length=400, blank=True, null=True)
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return self.title
-
-
-class Variant(models.Model):
-    title = models.CharField(max_length=400)
-    thai_title = models.CharField(max_length=400, blank=True, null=True)
-    thai_transcript_name = models.CharField(max_length=400, null=True)
-    dish = models.ForeignKey(Dish, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return self.title
-# Source (Book, site...) 1<----through recipe_source---* Recipe *->1 Variant
+# Source (Book, site...) 1<----through recipe_source---* Recipe *->1 Category
 #                              subsource (page, link...)
 # Variant 1<-* Recipe
 
@@ -58,7 +43,7 @@ class Recipe(models.Model):
     title = models.CharField(max_length=400)
     source = models.ForeignKey(Source, on_delete=models.CASCADE)
     subsource = models.CharField(max_length=400)
-    variant = models.ForeignKey(Variant, on_delete=models.CASCADE)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.title
+        return f"---{self.title}--- ({self.source}, {self.subsource}) [{self.category}]"
