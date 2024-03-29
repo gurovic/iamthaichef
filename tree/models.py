@@ -13,7 +13,7 @@ class Category(MPTTModel):
                             related_name='children')
 
     def __str__(self):
-        return f"{self.title} #{self.id}"
+        return f"{self.title} #{self.id} " +  (self.thai_title or "") + ("/" if self.thai_title else "") + (self.thai_transcript_name or "")
 
     class Meta:
         verbose_name_plural = "categories"
