@@ -22,5 +22,6 @@ import tree.views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('load-data', tree.views.load_data),
-    path('bulk-load/', tree.views.bulk_load)
+    path('bulk-load/', tree.views.bulk_load),
+    path('', tree.views.show_tree)
 ]

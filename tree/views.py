@@ -29,3 +29,6 @@ def bulk_load(request):
         recipe.save()
 
     return redirect('/')
+
+def show_tree(request):
+    return render(request, "tree.html", {'categories': Category.objects.all()})
