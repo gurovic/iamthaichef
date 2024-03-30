@@ -1,5 +1,6 @@
 from django.db import models
 from mptt.models import MPTTModel, TreeForeignKey
+from django.contrib.auth.models import User
 # Create your models here.
 
 
@@ -47,3 +48,26 @@ class Recipe(models.Model):
 
     def __str__(self):
         return f"---{self.title}--- ({self.source}, {self.subsource}) [{self.category}]"
+
+COOK_STATUS = [
+    ("N", "Never cooked"),
+    ("W", "Want to cook"),
+    ("C", "Cooked"),
+    ("S", "My signature dish"),
+]
+
+TASTE_STATUS = [
+    ("N", "Never tasted"),
+    ("W", "Want to taste"),
+    ("T", "Tasted"),
+    ("F", "My favorite dish"),
+]
+class UserRecipeRelation(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
+    cooked = models.CharField(max_length=1, choices=COOK_STATUS, default="N")
+    tasted = models.CharField(max_length=1, choices=TASTE_STATUS, default="N")
+
+
+    def __str__(self):
+        return f"{self.user} - {self.recipe.title}"

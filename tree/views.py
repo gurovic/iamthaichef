@@ -2,6 +2,22 @@ from django.shortcuts import render, redirect
 from django.views.decorators.http import require_http_methods
 from .models import Category, Recipe
 from . import spreadsheet
+from django.http import JsonResponse
+
+
+def get_tree_data(request):
+    tree_data = []
+    objects = Category.objects.all()
+
+    for obj in objects:
+        tree_data.append({
+            'id': obj.id,
+            'parent': obj.parent_id if obj.parent else '#',  # '#' указывает на корневой уровень
+            'text': obj.title
+        })
+
+    return JsonResponse(tree_data, safe=False)
+
 
 def load_data(request):
     return render(request, 'load_data.html')
