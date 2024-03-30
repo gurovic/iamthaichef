@@ -15,8 +15,10 @@
                     {{ children }}
                 </ul>
             {% else %}
-                {% for recipe in node.recipes %}
-                    {{ recipe }},
+                {% for recipe in node.recipe_set.all %}
+                    <ul>
+                        <li><a href="">{{ recipe.title }}</a></li>
+                    </ul>
                 {% endfor %}
             {% endif %}
         </li>
