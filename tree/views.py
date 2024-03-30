@@ -31,6 +31,8 @@ def bulk_load(request):
     # column 8 -> recipe.category.thai_title
     # column 9 -> recipe.category.thai_transcription_name
     # column 11 -> recipe.category.parent
+
+    # column 14 -> recipe.ingredients
     for line in spreadsheet.get_data(request.GET['start_line'], request.GET['finish_line']):
         category = Category(title=line[7],
                             thai_title=line[8],
@@ -41,7 +43,9 @@ def bulk_load(request):
         recipe = Recipe(title=line[6],
                         source_id=int(line[3]),
                         subsource=line[4],
-                        category=category)
+                        category=category,
+                        ingredients=line[14],
+                        vegetarian=line[17])
         recipe.save()
 
     return redirect('/')

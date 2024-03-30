@@ -17,6 +17,15 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.10/jstree.min.js"></script>
 
     <script>
+        $.jstree.defaults.plugins = ["checkbox",
+	"contextmenu",
+	"dnd",
+	"massload",
+	"search",
+	"state",
+	"types",
+	"wholerow",
+	"changed",];
         $(function () {
             // Инициализация jsTree
             $('#tree').jstree({
