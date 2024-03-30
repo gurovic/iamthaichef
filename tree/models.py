@@ -40,11 +40,22 @@ class Source(models.Model):
         return self.title
 
 
+VEG_TYPES = [
+    ("V", "vegetarian"),
+    ("F", "with fish"),
+    ("S", "with seafood"),
+    ("M", "with meat"),
+    ("?", "no info")
+]
+
+
 class Recipe(models.Model):
     title = models.CharField(max_length=400)
     source = models.ForeignKey(Source, on_delete=models.CASCADE)
     subsource = models.CharField(max_length=400)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    vegetarian = models.CharField(max_length=2, choices=VEG_TYPES, default="?")
+    ingredients = models.CharField(max_length=400, null=True, blank=True, default="")
 
     def __str__(self):
         return f"---{self.title}--- ({self.source}, {self.subsource}) [{self.category}]"
