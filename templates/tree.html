@@ -14,6 +14,10 @@
                 <ul class="children">
                     {{ children }}
                 </ul>
+            {% else %}
+                {% for recipe in node.recipes %}
+                    {{ recipe }},
+                {% endfor %}
             {% endif %}
         </li>
     {% endrecursetree %}
