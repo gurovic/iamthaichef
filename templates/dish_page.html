@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ dish.title }}</title>
+</head>
+<body>
+<h1>{{ dish.title }}</h1>
+{% if dish.thai_title %}
+    <h2>{{ dish.thai_title }}</h2>
+{% endif %}
+{% if dish.thai_transkript_name %}
+    <h3>{{ dish.thai_transcript_name }}</h3>
+{% endif %}
+<h4>Recipes</h4>
+<ul>
+    {% for recipe in dish.recipe_set.all %}
+        <li>{{ recipe.title }} ({{ recipe.source }}, {{ recipe.subsource }}
+            [{{ recipe.get_vegetarian_display }}]
+            {% if recipe.ingredients %}
+                <br><em>{{ recipe.ingredients }}</em>
+            {% endif %}
+        </li>
+    {% endfor %}
+</ul>
+</body>
+</html>

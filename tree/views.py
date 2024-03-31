@@ -34,11 +34,14 @@ def bulk_load(request):
 
     # column 14 -> recipe.ingredients
     for line in spreadsheet.get_data(request.GET['start_line'], request.GET['finish_line']):
-        category = Category(title=line[7],
-                            thai_title=line[8],
-                            thai_transcript_name=line[9],
-                            parent_id=int(line[11]))
-        category.save()
+        if line[7] != '-':
+            category = Category(title=line[7],
+                                thai_title=line[8],
+                                thai_transcript_name=line[9],
+                                parent_id=int(line[11]))
+            category.save()
+        else:
+            category = Category.objects.get(pk=int(line[11]))
 
         recipe = Recipe(title=line[6],
                         source_id=int(line[3]),
@@ -52,3 +55,7 @@ def bulk_load(request):
 
 def show_tree(request):
     return render(request, "tree.html", {'categories': Category.objects.all()})
+
+def show_dish(request, id):
+    dish = Category.objects.get(pk=id)
+    return render(request, 'dish_page.html', {'dish': dish})
