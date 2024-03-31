@@ -13,7 +13,8 @@ def get_tree_data(request):
         tree_data.append({
             'id': obj.id,
             'parent': obj.parent_id if obj.parent else '#',  # '#' указывает на корневой уровень
-            'text': obj.title
+            'text': obj.title,
+            'a_attr': {'href': f'/dish/{obj.id}'}
         })
 
     return JsonResponse(tree_data, safe=False)

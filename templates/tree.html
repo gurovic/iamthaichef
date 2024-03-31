@@ -17,15 +17,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.10/jstree.min.js"></script>
 
     <script>
-        $.jstree.defaults.plugins = ["checkbox",
-	"contextmenu",
-	"dnd",
-	"massload",
-	"search",
-	"state",
-	"types",
-	"wholerow",
-	"changed",];
+        $.jstree.defaults.plugins = ['wholerow', 'changed'
+	];
         $(function () {
             // Инициализация jsTree
             $('#tree').jstree({
@@ -38,6 +31,11 @@
                     }
                 }
             });
+        });
+        $("#tree").on("click", ".jstree-anchor", function(evt)
+        {
+            var link = $(evt.target).attr("href");
+            window.open(link, '_self');
         });
     </script>
 </body>
