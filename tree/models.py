@@ -53,6 +53,7 @@ class Recipe(models.Model):
     title = models.CharField(max_length=400)
     source = models.ForeignKey(Source, on_delete=models.CASCADE)
     subsource = models.CharField(max_length=400)
+    link = models.CharField(max_length=400)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     vegetarian = models.CharField(max_length=2, choices=VEG_TYPES, default="?")
     ingredients = models.CharField(max_length=400, null=True, blank=True, default="")

@@ -26,6 +26,7 @@ def load_data(request):
 def bulk_load(request):
     # column 3 -> recipe.source
     # column 4 -> recipe.subsource
+    # column 5 -> recipe.link
     # column 6 -> recipe.title
 
     # column 7 -> recipe.category (new)
@@ -47,6 +48,7 @@ def bulk_load(request):
         recipe = Recipe(title=line[6],
                         source_id=int(line[3]),
                         subsource=line[4],
+                        link=line[5],
                         category=category,
                         ingredients=line[14],
                         vegetarian=line[17])
