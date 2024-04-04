@@ -12,9 +12,13 @@ class Category(MPTTModel):
     thai_transcript_name = models.CharField(max_length=200, blank=True, null=True)
     parent = TreeForeignKey('self',  blank=True, null=True, on_delete=models.CASCADE,
                             related_name='children')
+    number_of_recipes = models.IntegerField(default=0)
 
     def __str__(self):
-        return f"{self.title} #{self.id} " +  (self.thai_title or "") + ("/" if self.thai_title else "") + (self.thai_transcript_name or "")
+        return (f"{self.title} #{self.id} " +  (self.thai_title or "") +
+                ("/" if self.thai_title else "") + (self.thai_transcript_name or "") +
+                (f" <{self.number_of_recipes} recipe" if self.number_of_recipes > 0 else "") +
+                ("s>" if self.number_of_recipes > 1 else ">" if self.number_of_recipes > 0 else ""))
 
     class Meta:
         verbose_name_plural = "categories"

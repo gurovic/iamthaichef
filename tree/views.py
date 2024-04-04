@@ -13,7 +13,7 @@ def get_tree_data(request):
         tree_data.append({
             'id': obj.id,
             'parent': obj.parent_id if obj.parent else '#',  # '#' указывает на корневой уровень
-            'text': obj.title,
+            'text': str(obj),
             'a_attr': {'href': f'/dish/{obj.id}'}
         })
 
@@ -62,3 +62,18 @@ def show_tree(request):
 def show_dish(request, id):
     dish = Category.objects.get(pk=id)
     return render(request, 'dish_page.html', {'dish': dish})
+
+
+def recipe_number(cat):
+    result = len(cat.recipe_set.all())
+    print(result)
+    for child in cat.children.all():
+        result += recipe_number(child)
+    cat.number_of_recipes = result
+    cat.save()
+    return result
+
+def refresh_recipe_numbers(request):
+    cats = Category.objects.filter(parent=None)
+    for cat in cats:
+        recipe_number(cat)
