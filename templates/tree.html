@@ -9,6 +9,26 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.10/themes/default/style.min.css">
 </head>
 <body>
+{% if dish_type == "V" %}
+<strong>vegetarian</strong>
+{% else %}
+<a href="{% url 'tree_veg' %}">vegetarian</a>
+{% endif %}
+{% if dish_type == "F" %}
+<strong>vegetarian + fish</strong>
+{% else %}
+<a href="{% url 'tree_fish' %}">vegetarian + fish</a> {% endif %}
+{% if dish_type == "S" %}
+<strong>vegetarian + fish + seafood</strong>
+{% else %}
+<a href="{% url 'tree_seafood' %}">vegetarian + fish + seafood</a>
+{% endif %}
+{% if dish_type == "M" %}
+<strong>all dishes</strong>
+{% else %}
+<a href="{% url 'tree' %}">all dishes</a>
+{% endif %}
+
     <div id="tree"></div>
 
     <!-- Подключаем библиотеку jQuery -->
@@ -24,7 +44,7 @@
             $('#tree').jstree({
                 'core' : {
                     'data' : {
-                        'url' : '/get_tree_data/',  // URL для получения данных об объектах
+                        'url' : '/get_tree_data/{{ dish_type }}',  // URL для получения данных об объектах
                         'data' : function (node) {
                             return { 'id' : node.id };
                         }

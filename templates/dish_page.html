@@ -14,7 +14,7 @@
 {% endif %}
 <h4>Recipes</h4>
 <ul>
-    {% for recipe in dish.recipe_set.all %}
+    {% for recipe in recipes %}
         <li><strong>{{ recipe.title }}</strong>
             {% if recipe.link %}(<a href="{{ recipe.link }}">{{ recipe.source }}, {{ recipe.subsource }}</a>)
             {% else %}

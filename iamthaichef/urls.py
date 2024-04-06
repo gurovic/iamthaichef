@@ -23,8 +23,12 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('load-data', tree.views.load_data),
     path('bulk-load/', tree.views.bulk_load),
-    path('get_tree_data/', tree.views.get_tree_data, name='get_tree_data'),
-    path('dish/<int:id>', tree.views.show_dish, name='dish'),
+    path('get_tree_data/<str:dish_type>', tree.views.get_tree_data, name='get_tree_data'),
+    path('dish/<int:id>/<str:dish_type>', tree.views.show_dish, name='dish'),
     path('refresh', tree.views.refresh_recipe_numbers),
-    path('', tree.views.show_tree),
+    path('', tree.views.show_tree, name="tree"),
+    path('tree_veg', tree.views.show_tree_veg, name="tree_veg"),
+    path('tree_fish', tree.views.show_tree_fish, name="tree_fish"),
+    path('tree_seafood', tree.views.show_tree_seafood, name="tree_seafood"),
+    path('refresh', tree.views.refresh_recipe_numbers)
 ]

@@ -13,10 +13,13 @@ class Category(MPTTModel):
     parent = TreeForeignKey('self',  blank=True, null=True, on_delete=models.CASCADE,
                             related_name='children')
     number_of_recipes = models.IntegerField(default=0)
+    number_of_veg_recipes = models.IntegerField(default=0)
+    number_of_fish_recipes = models.IntegerField(default=0)
+    number_of_seafood_recipes = models.IntegerField(default=0)
 
     def __str__(self):
         return (f"{self.title} #{self.id} " +  (self.thai_title or "") +
-                ("/" if self.thai_title else "") + (self.thai_transcript_name or "") +
+                ("/" if self.thai_title and self.thai_transcript_name else "") + (self.thai_transcript_name or "") +
                 (f" <{self.number_of_recipes} recipe" if self.number_of_recipes > 0 else "") +
                 ("s>" if self.number_of_recipes > 1 else ">" if self.number_of_recipes > 0 else ""))
 
