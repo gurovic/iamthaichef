@@ -16,6 +16,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.conf.urls import include
+
 
 import tree.views
 
@@ -28,5 +30,7 @@ urlpatterns = [
     path('refresh', tree.views.refresh_recipe_numbers),
     path('tree/<str:dish_type>', tree.views.show_tree, name="tree"),
     path('refresh', tree.views.refresh_recipe_numbers),
-    path('', tree.views.show_tree)
+    path('', tree.views.show_tree),
+    path('login/', tree.views.user_login, name='login'),
+    path('register/', tree.views.register, name='register'),
 ]

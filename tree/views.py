@@ -2,21 +2,21 @@ from django.shortcuts import render, redirect
 from django.views.decorators.http import require_http_methods
 from .models import Category, Recipe, News
 from . import spreadsheet
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.db.models import Q
+from .forms import LoginForm, UserRegistrationForm
 
 
 def get_tree_data(request, dish_type):
     tree_data = []
     if dish_type == "M":
         objects = Category.objects.all()
-    if dish_type == "V":
+    elif dish_type == "V":
         objects = Category.objects.filter(Q(number_of_veg_recipes__gt=0))
-    if dish_type == "F":
+    elif dish_type == "F":
         objects = Category.objects.filter(Q(number_of_fish_recipes__gt=0) | Q(number_of_veg_recipes__gt=0))
-    if dish_type == "S":
+    else:
         objects = Category.objects.filter(Q(number_of_seafood_recipes__gt=0) | Q(number_of_fish_recipes__gt=0) | Q(number_of_veg_recipes__gt=0))
-
 
     for obj in objects:
         if dish_type == "M":
@@ -117,3 +117,42 @@ def refresh_recipe_numbers(request):
     cats = Category.objects.filter(parent=None)
     for cat in cats:
         recipe_number(cat)
+
+
+from django.contrib.auth import authenticate, login
+from .forms import LoginForm
+
+def user_login(request):
+    if request.method == 'POST':
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            cd = form.cleaned_data
+            user = authenticate(username=cd['username'], password=cd['password'])
+            if user is not None:
+                if user.is_active:
+                    login(request, user)
+                    return HttpResponse('Authenticated successfully')
+                else:
+                    return HttpResponse('Disabled account')
+            else:
+                return HttpResponse('Invalid login')
+    else:
+        form = LoginForm()
+    return render(request, 'account/login.html', {'form': form})
+
+
+
+def register(request):
+    if request.method == 'POST':
+        user_form = UserRegistrationForm(request.POST)
+        if user_form.is_valid():
+            # Create a new user object but avoid saving it yet
+            new_user = user_form.save(commit=False)
+            # Set the chosen password
+            new_user.set_password(user_form.cleaned_data['password'])
+            # Save the User object
+            new_user.save()
+            return render(request, 'account/register_done.html', {'new_user': new_user})
+    else:
+        user_form = UserRegistrationForm()
+    return render(request, 'account/register.html', {'user_form': user_form})
