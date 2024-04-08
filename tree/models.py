@@ -92,7 +92,7 @@ class UserRecipeRelation(models.Model):
         return f"{self.user} - {self.recipe.title}"
 
 class News (models.Model):
-    text = models.CharField(max_length=1000)
+    text = models.CharField(max_length=500)
     date = models.DateField(auto_now_add=True)
 
     class Meta:
