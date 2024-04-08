@@ -97,6 +97,8 @@ class News (models.Model):
 
     class Meta:
         verbose_name_plural = "news"
+        ordering = ["-date"]
+
 
     def __str__(self):
         return f"{self.date} {self.text[:40]}..."
