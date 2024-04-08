@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.views.decorators.http import require_http_methods
-from .models import Category, Recipe
+from .models import Category, Recipe, News
 from . import spreadsheet
 from django.http import JsonResponse
 from django.db.models import Q
@@ -75,18 +75,11 @@ def bulk_load(request):
 
     return redirect('/')
 
-def show_tree_veg(request):
-    return render(request, "tree.html", {'categories': Category.objects.filter(), 'dish_type': 'V'})
 
-def show_tree_fish(request):
-    return render(request, "tree.html", {'categories': Category.objects.all(), 'dish_type': 'F'})
-
-def show_tree_seafood(request):
-    return render(request, "tree.html", {'categories': Category.objects.all(), 'dish_type': 'S'})
-
-
-def show_tree(request):
-    return render(request, "tree.html", {'categories': Category.objects.all(), 'dish_type': 'M'})
+def show_tree(request, dish_type="M"):
+    return render(request, "index.html", {'categories': Category.objects.all(),
+                                         'dish_type': dish_type,
+                                         'news': News.objects.all()})
 
 def show_dish(request, id, dish_type):
     dish = Category.objects.get(pk=id)

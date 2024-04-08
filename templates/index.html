@@ -9,28 +9,36 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.10/themes/default/style.min.css">
 </head>
 <body>
-{% if dish_type == "V" %}
-<strong>vegetarian</strong>
-{% else %}
-<a href="{% url 'tree_veg' %}">vegetarian</a>
-{% endif %}
-{% if dish_type == "F" %}
-<strong>vegetarian + fish</strong>
-{% else %}
-<a href="{% url 'tree_fish' %}">vegetarian + fish</a> {% endif %}
-{% if dish_type == "S" %}
-<strong>vegetarian + fish + seafood</strong>
-{% else %}
-<a href="{% url 'tree_seafood' %}">vegetarian + fish + seafood</a>
-{% endif %}
-{% if dish_type == "M" %}
-<strong>all dishes</strong>
-{% else %}
-<a href="{% url 'tree' %}">all dishes</a>
-{% endif %}
+<div style="float:left">
+    {% if dish_type == "V" %}
+    <strong>vegetarian</strong>
+    {% else %}
+    <a href="{% url 'tree' dish_type="V" %}">vegetarian</a>
+    {% endif %}
+    {% if dish_type == "F" %}
+    <strong>vegetarian + fish</strong>
+    {% else %}
+    <a href="{% url 'tree' dish_type="F"%}">vegetarian + fish</a> {% endif %}
+    {% if dish_type == "S" %}
+    <strong>vegetarian + fish + seafood</strong>
+    {% else %}
+    <a href="{% url 'tree' dish_type="S" %}">vegetarian + fish + seafood</a>
+    {% endif %}
+    {% if dish_type == "M" %}
+    <strong>all dishes</strong>
+    {% else %}
+    <a href="{% url 'tree' dish_type="M" %}">all dishes</a>
+    {% endif %}
 
     <div id="tree"></div>
-
+</div>
+<div style="float: right">
+    <ul>
+    {% for news_piece in news %}
+        <li><strong>{{news_piece.date}}</strong> {{ news_piece.text }}
+    {% endfor %}
+    </ul>
+</div>
     <!-- Подключаем библиотеку jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <!-- Подключаем jsTree -->

@@ -90,3 +90,13 @@ class UserRecipeRelation(models.Model):
 
     def __str__(self):
         return f"{self.user} - {self.recipe.title}"
+
+class News (models.Model):
+    text = models.CharField(max_length=1000)
+    date = models.DateField(auto_now_add=True)
+
+    class Meta:
+        verbose_name_plural = "news"
+
+    def __str__(self):
+        return f"{self.date} {self.text[:40]}..."
