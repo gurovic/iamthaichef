@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.views.decorators.http import require_http_methods
-from .models import Category, Recipe, News
+from .models import Category, Recipe, News, UserRecipeRelation
 from . import spreadsheet
 from django.http import JsonResponse, HttpResponse
 from django.db.models import Q
@@ -92,6 +92,12 @@ def show_dish(request, id, dish_type):
     else:
         recipes = dish.recipe_set.filter(Q(vegetarian='V') | Q(vegetarian='F') | Q(vegetarian='S'))
 
+    for recipe in recipes:
+        cooked = UserRecipeRelation.objects.filter(user=request.user, recipe=recipe).values('cooked')
+        if cooked:
+            recipe.cooked = cooked[0]['cooked']
+        else:
+            recipe.cooked = 'N'
     return render(request, 'dish_page.html', {'dish': dish, 'recipes': recipes})
 
 
@@ -156,3 +162,10 @@ def register(request):
     else:
         user_form = UserRegistrationForm()
     return render(request, 'account/register.html', {'user_form': user_form})
+
+def select_cooked(request, recipe_id, cooked):
+    recipe = Recipe.objects.get(id=recipe_id)
+    recipe.users.remove(request.user)
+    recipe.users.add(request.user, through_defaults={"cooked":cooked})
+    recipe.save()
+    return HttpResponse()

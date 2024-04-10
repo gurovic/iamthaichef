@@ -64,6 +64,7 @@ class Recipe(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     vegetarian = models.CharField(max_length=2, choices=VEG_TYPES, default="?")
     ingredients = models.CharField(max_length=400, null=True, blank=True, default="")
+    users = models.ManyToManyField(User, through='UserRecipeRelation')
 
     def __str__(self):
         return f"---{self.title}--- ({self.source}, {self.subsource}) [{self.category}]"

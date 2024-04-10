@@ -24,8 +24,27 @@
             {% if recipe.ingredients %}
                 <br><em>{{ recipe.ingredients }}</em>
             {% endif %}
+        <form>
+            <select name="cooked" id="recipe{{ recipe.id }}" class="cooked" onchange="cooked_select({{  recipe.id }})">
+                <option value="N" {%  if recipe.cooked == "N" %}selected{% endif %}>Never cooked</option>
+                <option value="W" {%  if recipe.cooked == "W" %}selected{% endif %}>Want to cook</option>
+                <option value="C" {%  if recipe.cooked == "C" %}selected{% endif %}>Cooked</option>
+                <option value="S" {%  if recipe.cooked == "S" %}selected{% endif %}>My signature dish</option>
+            </select>
+        </form>
+
         </li>
+        <br>
     {% endfor %}
 </ul>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    function cooked_select(recipe_id){
+        var options = {};
+        options.url = "/select_cooked/" + recipe_id + "/" + $('#recipe' + recipe_id + ' option:selected').val();
+        options.method = "get";
+        $.ajax(options);
+    }
+</script>
 </body>
 </html>
