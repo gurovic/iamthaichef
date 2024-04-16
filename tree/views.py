@@ -92,12 +92,13 @@ def show_dish(request, id, dish_type):
     else:
         recipes = dish.recipe_set.filter(Q(vegetarian='V') | Q(vegetarian='F') | Q(vegetarian='S'))
 
-    for recipe in recipes:
-        cooked = UserRecipeRelation.objects.filter(user=request.user, recipe=recipe).values('cooked')
-        if cooked:
-            recipe.cooked = cooked[0]['cooked']
-        else:
-            recipe.cooked = 'N'
+    if not request.user.is_anonymous:
+        for recipe in recipes:
+            cooked = UserRecipeRelation.objects.filter(user=request.user, recipe=recipe).values('cooked')
+            if cooked:
+                recipe.cooked = cooked[0]['cooked']
+            else:
+                recipe.cooked = 'N'
     return render(request, 'dish_page.html', {'dish': dish, 'recipes': recipes})
 
 

@@ -24,6 +24,7 @@
             {% if recipe.ingredients %}
                 <br><em>{{ recipe.ingredients }}</em>
             {% endif %}
+        {%  if not user.is_anonymous %}
         <form>
             <select name="cooked" id="recipe{{ recipe.id }}" class="cooked" onchange="cooked_select({{  recipe.id }})">
                 <option value="N" {%  if recipe.cooked == "N" %}selected{% endif %}>Never cooked</option>
@@ -32,7 +33,7 @@
                 <option value="S" {%  if recipe.cooked == "S" %}selected{% endif %}>My signature dish</option>
             </select>
         </form>
-
+        {%  endif %}
         </li>
         <br>
     {% endfor %}
