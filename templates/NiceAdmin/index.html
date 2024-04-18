@@ -210,7 +210,7 @@
           </ul><!-- End Messages Dropdown Items -->
 
         <!--/li><!-- End Messages Nav -->
-
+        {%  if not user.is_anonymous %}
         <li class="nav-item dropdown pe-3">
 
           <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
@@ -242,20 +242,20 @@
                 <i class="bi bi-gear"></i>
                 <span>Account Settings</span>
               </a>
-            </li-->
+            </li>
             <li>
               <hr class="dropdown-divider">
-            </li>
+            </li-->
 
             <!--li>
               <a class="dropdown-item d-flex align-items-center" href="pages-faq.html">
                 <i class="bi bi-question-circle"></i>
                 <span>Need Help?</span>
               </a>
-            </li-->
+            </li>
             <li>
               <hr class="dropdown-divider">
-            </li>
+            </li-->
 
             <li>
               <a class="dropdown-item d-flex align-items-center" href="{% url 'logout'  %}">
@@ -264,9 +264,23 @@
               </a>
             </li>
 
-          </ul><!-- End Profile Dropdown Items -->
-        </li><!-- End Profile Nav -->
+          <!--/ul--><!-- End Profile Dropdown Items -->
+        <!--/li--><!-- End Profile Nav -->
 
+
+      {% else %}
+          <li>
+            <div class="search-bar">
+              <form class="login d-flex align-items-center" method="POST" action="{% url 'login' %}">
+                {% csrf_token %}
+                <input type="text" name="username" placeholder="Login" title="Enter login">
+                &nbsp;&nbsp;<input type="text" name="password" placeholder="Password" title="Enter password">
+                &nbsp;&nbsp;<button type="submit" title="Login"><i class="bi bi-arrow-right"></i></button>
+              </form>
+                <a href="{% url 'register' %}">Register</a>
+            </div>
+          </li>
+      {% endif %}
       </ul>
     </nav><!-- End Icons Navigation -->
 
@@ -517,26 +531,20 @@
 
     <section class="section dashboard">
       <div class="row">
-    {% if dish_type == "V" %}
-    <strong>vegetarian</strong>
-    {% else %}
-    <a href="{% url 'tree' dish_type="V" %}">vegetarian</a>
-    {% endif %}
-    {% if dish_type == "F" %}
-    <strong>vegetarian + fish</strong>
-    {% else %}
-    <a href="{% url 'tree' dish_type="F"%}">vegetarian + fish</a> {% endif %}
-    {% if dish_type == "S" %}
-    <strong>vegetarian + fish + seafood</strong>
-    {% else %}
-    <a href="{% url 'tree' dish_type="S" %}">vegetarian + fish + seafood</a>
-    {% endif %}
-    {% if dish_type == "M" %}
-    <strong>all dishes</strong>
-    {% else %}
-    <a href="{% url 'tree' dish_type="M" %}">all dishes</a>
-    {% endif %}
-
+    <ul class="nav nav-tabs">
+  <li class="nav-item">
+    <a class="nav-link {% if dish_type == "M" %}active{% endif %}" aria-current="page" href="{% url 'tree' 'M' %}">All dishes</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link {% if dish_type == "V" %}active{% endif %}" href="{% url 'tree' 'V' %}">Vegetarian</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link {% if dish_type == "F" %}active{% endif %}" href="{% url 'tree' 'F' %}">Vegetarian + Fish</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link {% if dish_type == "S" %}active{% endif %}" href="{% url 'tree' 'S' %}">Vegetarian + Fish + Seafood</a>
+  </li>
+</ul>
     <div id="tree"></div>
 </div>
 <div style="float: right">

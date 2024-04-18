@@ -1,11 +1,14 @@
 from django.shortcuts import render, redirect
 from django.views.decorators.http import require_http_methods
-from .models import Category, Recipe, News, UserRecipeRelation
-from . import spreadsheet
 from django.http import JsonResponse, HttpResponse
 from django.db.models import Q
+from django.contrib.auth import logout, authenticate, login
+
 from .forms import LoginForm, UserRegistrationForm
-from django.contrib.auth import logout
+from . import spreadsheet
+from .models import Category, Recipe, News, UserRecipeRelation
+
+
 
 
 
@@ -128,9 +131,6 @@ def refresh_recipe_numbers(request):
         recipe_number(cat)
 
 
-from django.contrib.auth import authenticate, login
-from .forms import LoginForm
-
 def user_login(request):
     if request.method == 'POST':
         form = LoginForm(request.POST)
@@ -140,7 +140,7 @@ def user_login(request):
             if user is not None:
                 if user.is_active:
                     login(request, user)
-                    return HttpResponse('Authenticated successfully')
+                    return redirect('/')
                 else:
                     return HttpResponse('Disabled account')
             else:

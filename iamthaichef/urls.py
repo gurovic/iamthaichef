@@ -23,16 +23,18 @@ import tree.views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+
     path('load-data', tree.views.load_data),
     path('bulk-load/', tree.views.bulk_load),
+    path('refresh', tree.views.refresh_recipe_numbers),
+
     path('get_tree_data/<str:dish_type>', tree.views.get_tree_data, name='get_tree_data'),
     path('dish/<int:id>/<str:dish_type>', tree.views.show_dish, name='dish'),
-    path('refresh', tree.views.refresh_recipe_numbers),
     path('tree/<str:dish_type>', tree.views.show_tree, name="tree"),
-    path('refresh', tree.views.refresh_recipe_numbers),
     path('', tree.views.show_tree),
+    path('select_cooked/<int:recipe_id>/<str:cooked>', tree.views.select_cooked, name='select_cooked'),
+
     path('login/', tree.views.user_login, name='login'),
     path('logout/', tree.views.logout_view, name='logout'),
     path('register/', tree.views.register, name='register'),
-    path('select_cooked/<int:recipe_id>/<str:cooked>', tree.views.select_cooked, name='select_cooked')
 ]
