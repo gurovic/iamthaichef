@@ -77,7 +77,7 @@ def bulk_load(request):
 
 
 def show_tree(request, dish_type="M"):
-    return render(request, "index.html", {'categories': Category.objects.all(),
+    return render(request, "NiceAdmin/index.html", {'categories': Category.objects.all(),
                                          'dish_type': dish_type,
                                          'news': News.objects.all()})
 
