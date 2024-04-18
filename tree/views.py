@@ -5,6 +5,8 @@ from . import spreadsheet
 from django.http import JsonResponse, HttpResponse
 from django.db.models import Q
 from .forms import LoginForm, UserRegistrationForm
+from django.contrib.auth import logout
+
 
 
 def get_tree_data(request, dish_type):
@@ -170,3 +172,7 @@ def select_cooked(request, recipe_id, cooked):
     recipe.users.add(request.user, through_defaults={"cooked":cooked})
     recipe.save()
     return HttpResponse()
+
+def logout_view(request):
+    logout(request)
+    return redirect('/')

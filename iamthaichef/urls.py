@@ -32,6 +32,7 @@ urlpatterns = [
     path('refresh', tree.views.refresh_recipe_numbers),
     path('', tree.views.show_tree),
     path('login/', tree.views.user_login, name='login'),
+    path('logout/', tree.views.logout_view, name='logout'),
     path('register/', tree.views.register, name='register'),
     path('select_cooked/<int:recipe_id>/<str:cooked>', tree.views.select_cooked, name='select_cooked')
 ]
