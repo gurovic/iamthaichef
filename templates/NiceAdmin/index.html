@@ -12,8 +12,8 @@
   <!-- Favicons -->
   <link href="/assets/img/favicon.png" rel="icon">
   <link href="/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.10/themes/default/style.min.css">
 
-   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.10/themes/default/style.min.css">
 
 
   <!-- Google Fonts -->
@@ -59,7 +59,7 @@
         <input type="text" name="query" placeholder="Search" title="Enter search keyword">
         <button type="submit" title="Search"><i class="bi bi-search"></i></button>
       </form>
-    </div><!-- End Search Bar -->
+    </div><-- End Search Bar -->
 
     <nav class="header-nav ms-auto">
       <ul class="d-flex align-items-center">
@@ -68,14 +68,14 @@
           <a class="nav-link nav-icon search-bar-toggle " href="#">
             <i class="bi bi-search"></i>
           </a>
-        </li><!-- End Search Icon-->
+        </li>-<-- End Search Icon-->
 
         <!--li class="nav-item dropdown">
 
           <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
             <i class="bi bi-bell"></i>
             <span class="badge bg-primary badge-number">4</span>
-          </a><!-- End Notification Icon -->
+          </a><-- End Notification Icon -->
 
           <!--ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">
             <li class="dropdown-header">
@@ -141,16 +141,16 @@
               <a href="#">Show all notifications</a>
             </li>
 
-          </ul><!-- End Notification Dropdown Items -->
+          </ul><-- End Notification Dropdown Items -->
 
-        <!--/li><!-- End Notification Nav -->
+        <!--/li><-- End Notification Nav -->
 
         <!--li class="nav-item dropdown">
 
           <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
             <i class="bi bi-chat-left-text"></i>
             <span class="badge bg-success badge-number">3</span>
-          </a><!-- End Messages Icon -->
+          </a><-- End Messages Icon -->
 
           <!--ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow messages">
             <li class="dropdown-header">
@@ -207,9 +207,9 @@
               <a href="#">Show all messages</a>
             </li>
 
-          </ul><!-- End Messages Dropdown Items -->
+          </ul><-- End Messages Dropdown Items -->
 
-        <!--/li><!-- End Messages Nav -->
+        <!--/li><-- End Messages Nav -->
         {%  if not user.is_anonymous %}
         <li class="nav-item dropdown pe-3">
 
@@ -233,7 +233,7 @@
                 <span>My Profile</span>
               </a>
             </li>
-            <!--li>
+            <--li>
               <hr class="dropdown-divider">
             </li-->
 
@@ -282,22 +282,28 @@
           </li>
       {% endif %}
       </ul>
+          </li>
+      </ul>
     </nav><!-- End Icons Navigation -->
 
   </header><!-- End Header -->
 
   <!-- ======= Sidebar ======= -->
   <aside id="sidebar" class="sidebar">
-
-    <ul class="sidebar-nav" id="sidebar-nav">
+      <ul class="sidebar-nav" id="sidebar-nav">
+    {% for news_piece in news %}
+        <li><strong>{{news_piece.date}}</strong> {{ news_piece.text }}
+    {% endfor %}
+    </ul>
+  </aside>
+    <!--ul class="sidebar-nav" id="sidebar-nav">
 
       <li class="nav-item">
         <a class="nav-link " href="index.html">
           <i class="bi bi-grid"></i>
           <span>Dashboard</span>
         </a>
-      </li><!-- End Dashboard Nav -->
-
+      </li>
       <li class="nav-item">
         <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
           <i class="bi bi-menu-button-wide"></i><span>Components</span><i class="bi bi-chevron-down ms-auto"></i>
@@ -374,7 +380,7 @@
             </a>
           </li>
         </ul>
-      </li><!-- End Components Nav -->
+      </li>
 
       <li class="nav-item">
         <a class="nav-link collapsed" data-bs-target="#forms-nav" data-bs-toggle="collapse" href="#">
@@ -402,7 +408,7 @@
             </a>
           </li>
         </ul>
-      </li><!-- End Forms Nav -->
+      </li>
 
       <li class="nav-item">
         <a class="nav-link collapsed" data-bs-target="#tables-nav" data-bs-toggle="collapse" href="#">
@@ -420,7 +426,7 @@
             </a>
           </li>
         </ul>
-      </li><!-- End Tables Nav -->
+      </li>
 
       <li class="nav-item">
         <a class="nav-link collapsed" data-bs-target="#charts-nav" data-bs-toggle="collapse" href="#">
@@ -443,7 +449,7 @@
             </a>
           </li>
         </ul>
-      </li><!-- End Charts Nav -->
+      </li>
 
       <li class="nav-item">
         <a class="nav-link collapsed" data-bs-target="#icons-nav" data-bs-toggle="collapse" href="#">
@@ -466,7 +472,7 @@
             </a>
           </li>
         </ul>
-      </li><!-- End Icons Nav -->
+      </li>
 
       <li class="nav-heading">Pages</li>
 
@@ -475,53 +481,53 @@
           <i class="bi bi-person"></i>
           <span>Profile</span>
         </a>
-      </li><!-- End Profile Page Nav -->
+      </li>
 
       <li class="nav-item">
         <a class="nav-link collapsed" href="pages-faq.html">
           <i class="bi bi-question-circle"></i>
           <span>F.A.Q</span>
         </a>
-      </li><!-- End F.A.Q Page Nav -->
+      </li>
 
       <li class="nav-item">
         <a class="nav-link collapsed" href="pages-contact.html">
           <i class="bi bi-envelope"></i>
           <span>Contact</span>
         </a>
-      </li><!-- End Contact Page Nav -->
+      </li>
 
       <li class="nav-item">
         <a class="nav-link collapsed" href="pages-register.html">
           <i class="bi bi-card-list"></i>
           <span>Register</span>
         </a>
-      </li><!-- End Register Page Nav -->
+      </li>
 
       <li class="nav-item">
         <a class="nav-link collapsed" href="pages-login.html">
           <i class="bi bi-box-arrow-in-right"></i>
           <span>Login</span>
         </a>
-      </li><!-- End Login Page Nav -->
+      </li>
 
       <li class="nav-item">
         <a class="nav-link collapsed" href="pages-error-404.html">
           <i class="bi bi-dash-circle"></i>
           <span>Error 404</span>
         </a>
-      </li><!-- End Error 404 Page Nav -->
+      </li>
 
       <li class="nav-item">
         <a class="nav-link collapsed" href="pages-blank.html">
           <i class="bi bi-file-earmark"></i>
           <span>Blank</span>
         </a>
-      </li><!-- End Blank Page Nav -->
+      </li>
 
     </ul>
 
-  </aside><!-- End Sidebar-->
+  </aside><-- End Sidebar-->
 
   <main id="main" class="main">
 
@@ -546,13 +552,6 @@
   </li>
 </ul>
     <div id="tree"></div>
-</div>
-<div style="float: right">
-    <ul>
-    {% for news_piece in news %}
-        <li><strong>{{news_piece.date}}</strong> {{ news_piece.text }}
-    {% endfor %}
-    </ul>
 </div>
     <!-- Подключаем библиотеку jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
