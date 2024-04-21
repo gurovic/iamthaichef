@@ -104,7 +104,7 @@ def show_dish(request, id, dish_type):
                 recipe.cooked = cooked[0]['cooked']
             else:
                 recipe.cooked = 'N'
-    return render(request, 'dish_page.html', {'dish': dish, 'recipes': recipes})
+    return render(request, 'NiceAdmin/dish_page.html', {'dish': dish, 'recipes': recipes})
 
 
 def recipe_number(cat):
