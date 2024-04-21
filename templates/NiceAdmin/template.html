@@ -83,7 +83,7 @@
               <form class="login d-flex align-items-center" method="POST" action="{% url 'login' %}">
                 {% csrf_token %}
                 <input type="text" name="username" placeholder="Login" title="Enter login">
-                &nbsp;&nbsp;<input type="text" name="password" placeholder="Password" title="Enter password">
+                &nbsp;&nbsp;<input type="password" name="password" placeholder="Password" title="Enter password">
                 &nbsp;&nbsp;<button type="submit" title="Login"><i class="bi bi-arrow-right"></i></button>
               </form>
                 <a href="{% url 'register' %}">Register</a>
