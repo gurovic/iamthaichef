@@ -17,6 +17,8 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from django.conf.urls import include
+from django.conf.urls.static import static
+from django.conf import settings
 
 
 import tree.views
@@ -37,4 +39,5 @@ urlpatterns = [
     path('login/', tree.views.user_login, name='login'),
     path('logout/', tree.views.logout_view, name='logout'),
     path('register/', tree.views.register, name='register'),
-]
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
