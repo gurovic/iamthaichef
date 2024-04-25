@@ -176,3 +176,9 @@ def select_cooked(request, recipe_id, cooked):
 def logout_view(request):
     logout(request)
     return redirect('/')
+
+def user_recipes(request, dish_type):
+    user_recipes = request.user.userreciperelation_set.all()
+    print(user_recipes, request.user)
+    return render(request, 'NiceAdmin/user_recipes.html', {'dish_type': dish_type, 'user_recipes': user_recipes})
+
