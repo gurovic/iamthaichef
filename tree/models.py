@@ -43,6 +43,7 @@ SOURCE_TYPES = [
 class Source(models.Model):
     title = models.CharField(max_length=400)
     source_type = models.CharField(max_length=2, choices=SOURCE_TYPES, default="N")
+    url = models.CharField(max_length=400, null=True, blank=True)
 
     def __str__(self):
         return self.title
