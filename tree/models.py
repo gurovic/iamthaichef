@@ -35,7 +35,7 @@ class Category(MPTTModel):
 SOURCE_TYPES = [
     ("S", "site"),
     ("B", "book"),
-    ("Y", "YouTube channel")
+    ("Y", "YouTube channel"),
     ("N", "no source"),
 ]
 
