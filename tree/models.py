@@ -108,7 +108,7 @@ class News (models.Model):
 
 
 class Ingredient(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, unique=True)
 
     def __str__(self):
         return self.name
@@ -116,7 +116,7 @@ class Ingredient(models.Model):
 
 class IngredientAlternatives(models.Model):
     ingredients = models.ManyToManyField(Ingredient)
-    dishes = models.ManyToManyField(Recipe)
+    dishes = models.ForeignKey(Recipe, on_delete=models.CASCADE)
 
-    def __str__(self):
-        return "/".join(map(str, self.ingredients.all()))
+    #def __str__(self):
+    #    return "/".join(map(str, self.ingredients.all()))

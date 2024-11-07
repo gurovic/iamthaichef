@@ -28,6 +28,9 @@ urlpatterns = [
 
     path('load-data', tree.views.load_data),
     path('bulk-load/', tree.views.bulk_load),
+    path('upgrade-ingredients', tree.views.upgrade_ingredients),
+
+
     path('refresh', tree.views.refresh_recipe_numbers),
 
     path('get_tree_data/<str:dish_type>', tree.views.get_tree_data, name='get_tree_data'),

@@ -6,11 +6,31 @@ from django.contrib.auth import logout, authenticate, login
 
 from .forms import LoginForm, UserRegistrationForm
 from . import spreadsheet
-from .models import Category, Recipe, News, UserRecipeRelation
+from .models import Category, Recipe, News, UserRecipeRelation, Ingredient, IngredientAlternatives
 
 
+def upgrade_ingredients(request):
+    recipes = Recipe.objects.all()
+    for recipe in recipes:
+        print(recipe)
+        ingredients_str = str(recipe.ingredients)
+        ingredients_alternatives_list = list(map(str.strip, ingredients_str.split(',')))
+        for alternative in ingredients_alternatives_list:
+            ingredients = list(map(str.strip, alternative.split('/')))
+            ingredient_objects = []
+            for ingredient in ingredients:
+                try:
+                    ingredient_obj = Ingredient.objects.get(name=ingredient)
+                except:
+                    ingredient_obj = Ingredient(name=ingredient)
+                    ingredient_obj.save()
+                ingredient_objects.append(ingredient_obj)
+            ia = IngredientAlternatives(dishes=recipe)
+            ia.save()
+            ia.ingredients.set(ingredient_objects)
 
 
+    return redirect('/')
 
 def get_tree_data(request, dish_type):
     tree_data = []
