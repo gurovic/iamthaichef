@@ -105,3 +105,18 @@ class News (models.Model):
 
     def __str__(self):
         return f"{self.date} {self.text[:40]}..."
+
+
+class Ingredient(models.Model):
+    name = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.name
+
+
+class IngredientAlternatives(models.Model):
+    ingredients = models.ManyToManyField(Ingredient)
+    dishes = models.ManyToManyField(Recipe)
+
+    def __str__(self):
+        return "/".join(map(str, self.ingredients.all()))
