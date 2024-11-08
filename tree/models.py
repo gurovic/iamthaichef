@@ -117,6 +117,7 @@ class Ingredient(models.Model):
 class IngredientAlternatives(models.Model):
     ingredients = models.ManyToManyField(Ingredient)
     dishes = models.ForeignKey(Recipe, on_delete=models.CASCADE)
+    optional = models.BooleanField(default=False)
 
-    #def __str__(self):
-    #    return "/".join(map(str, self.ingredients.all()))
+    def __str__(self):
+        return ("(" if self.optional else "") + "/".join(map(str, self.ingredients.all())) + (")" if self.optional else "")

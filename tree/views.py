@@ -16,6 +16,10 @@ def upgrade_ingredients(request):
         ingredients_str = str(recipe.ingredients)
         ingredients_alternatives_list = list(map(str.strip, ingredients_str.split(',')))
         for alternative in ingredients_alternatives_list:
+            optional = 0
+            if alternative and alternative[0] == "(" and alternative[-1] == ")":
+                optional = 1
+                alternative = alternative[1:-1]
             ingredients = list(map(str.strip, alternative.split('/')))
             ingredient_objects = []
             for ingredient in ingredients:
@@ -25,7 +29,7 @@ def upgrade_ingredients(request):
                     ingredient_obj = Ingredient(name=ingredient)
                     ingredient_obj.save()
                 ingredient_objects.append(ingredient_obj)
-            ia = IngredientAlternatives(dishes=recipe)
+            ia = IngredientAlternatives(dishes=recipe, optional=optional)
             ia.save()
             ia.ingredients.set(ingredient_objects)
 
