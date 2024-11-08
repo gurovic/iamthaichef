@@ -65,11 +65,21 @@ class Recipe(models.Model):
     link = models.CharField(max_length=400)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     vegetarian = models.CharField(max_length=2, choices=VEG_TYPES, default="?")
-    ingredients = models.CharField(max_length=400, null=True, blank=True, default="")
+    #ingredients = models.CharField(max_length=400, null=True, blank=True, default="")
     users = models.ManyToManyField(User, through='UserRecipeRelation')
 
     def __str__(self):
         return f"---{self.title}--- ({self.source}, {self.subsource}) [{self.category}]"
+
+    def ingredients_string(self):
+        ingredients_alternatives = self.ingredientalternatives_set.all()
+        result = []
+        for alternative in ingredients_alternatives:
+            if alternative.optional:
+                result.append("(" + "/".join(map(str, alternative.ingredients.all())) + ")")
+            else:
+                result.append("/".join(map(str, alternative.ingredients.all())))
+        return ", ".join(result) or ""
 
 COOK_STATUS = [
     ("N", "Never cooked"),
