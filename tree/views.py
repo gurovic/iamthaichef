@@ -12,7 +12,6 @@ from .models import Category, Recipe, News, UserRecipeRelation, Ingredient, Ingr
 def upgrade_ingredients(request):
     recipes = Recipe.objects.all()
     for recipe in recipes:
-        print(recipe)
         ingredients_str = str(recipe.ingredients)
         ingredients_alternatives_list = list(map(str.strip, ingredients_str.split(',')))
         for alternative in ingredients_alternatives_list:
@@ -136,7 +135,6 @@ def recipe_number(cat):
     result_v = len(cat.recipe_set.filter(vegetarian="V"))
     result_f = len(cat.recipe_set.filter(vegetarian="F"))
     result_s = len(cat.recipe_set.filter(vegetarian="S"))
-    print(result)
     for child in cat.children.all():
         result += recipe_number(child)[0]
         result_v += recipe_number(child)[1]
@@ -203,6 +201,5 @@ def logout_view(request):
 
 def user_recipes(request, dish_type):
     user_recipes = request.user.userreciperelation_set.all()
-    print(user_recipes, request.user)
     return render(request, 'NiceAdmin/user_recipes.html', {'dish_type': dish_type, 'user_recipes': user_recipes})
 
