@@ -19,7 +19,7 @@
                    ({{ recipe.source }}, {{ recipe.subsource }})
                 {%  endif %}
                 [{{ recipe.get_vegetarian_display }}]
-                <br><em>{{ recipe.ingredients_string }}</em>
+                <br><em>{{ recipe.ingredients_string |safe }}</em>
             {%  if not user.is_anonymous %}
             <form>
                 <select name="cooked" id="recipe{{ recipe.id }}" class="cooked" onchange="cooked_select({{  recipe.id }})">
