@@ -76,7 +76,7 @@ class Recipe(models.Model):
         result = []
         for alternative in ingredients_alternatives:
             if alternative.optional:
-
+                result.append("(" + "/".join(map(Ingredient.link, alternative.ingredients.all())) + ")")
             else:
                 result.append("/".join(map(Ingredient.link, alternative.ingredients.all())))
         return ", ".join(result) or ""
