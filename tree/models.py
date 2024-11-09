@@ -126,7 +126,7 @@ class Ingredient(models.Model):
 
 class IngredientAlternatives(models.Model):
     ingredients = models.ManyToManyField(Ingredient)
-    dishes = models.ForeignKey(Recipe, on_delete=models.CASCADE)
+    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
     optional = models.BooleanField(default=False)
 
     def __str__(self):
