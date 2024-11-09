@@ -203,3 +203,11 @@ def user_recipes(request, dish_type):
     user_recipes = request.user.userreciperelation_set.all()
     return render(request, 'NiceAdmin/user_recipes.html', {'dish_type': dish_type, 'user_recipes': user_recipes})
 
+def ingredient_dishes(request, ingredient_id):
+    ingredient = Ingredient.objects.get(pk=ingredient_id)
+    print(1, ingredient.name)
+    alternatives = IngredientAlternatives.objects.filter(ingredients=ingredient_id)
+    recipes = []
+    for alternative in alternatives:
+        recipes.append(alternative.recipe)
+    return render(request, 'NiceAdmin/ingredient_recipes.html', {'ingredient': ingredient, 'recipes': recipes})

@@ -76,9 +76,9 @@ class Recipe(models.Model):
         result = []
         for alternative in ingredients_alternatives:
             if alternative.optional:
-                result.append("(" + "/".join(map(str, alternative.ingredients.all())) + ")")
+
             else:
-                result.append("/".join(map(str, alternative.ingredients.all())))
+                result.append("/".join(map(Ingredient.link, alternative.ingredients.all())))
         return ", ".join(result) or ""
 
 COOK_STATUS = [
@@ -123,6 +123,8 @@ class Ingredient(models.Model):
     def __str__(self):
         return self.name
 
+    def link(self):
+        return f"<a href='/ingredient/{self.id}'>{self.name}</a>"
 
 class IngredientAlternatives(models.Model):
     ingredients = models.ManyToManyField(Ingredient)
