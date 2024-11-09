@@ -211,3 +211,7 @@ def ingredient_dishes(request, ingredient_id):
     for alternative in alternatives:
         recipes.append(alternative.recipe)
     return render(request, 'NiceAdmin/ingredient_recipes.html', {'ingredient': ingredient, 'recipes': recipes})
+
+def ingredient_list(request):
+    ingredients = Ingredient.objects.all().order_by('name')
+    return render(request, 'NiceAdmin/ingredients_list.html', {'ingredients': ingredients})

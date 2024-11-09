@@ -1,11 +1,8 @@
 from django.db import models
 from mptt.models import MPTTModel, TreeForeignKey
 from django.contrib.auth.models import User
-# Create your models here.
 
 
-# Category 1->* ... 1->* Category -> Dish 1->*    Dish variation 1->* Recipe
-# Soup ->     Without noodles -> Tom Yum -> Tom Yum Goong -> from pailin
 class Category(MPTTModel):
     title = models.CharField(max_length=200)
     thai_title = models.CharField(max_length=200, blank=True, null=True)
@@ -29,7 +26,7 @@ class Category(MPTTModel):
 
 # Source (Book, site...) 1<----through recipe_source---* Recipe *->1 Category
 #                              subsource (page, link...)
-# Variant 1<-* Recipe
+
 
 
 SOURCE_TYPES = [
@@ -65,7 +62,6 @@ class Recipe(models.Model):
     link = models.CharField(max_length=400)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     vegetarian = models.CharField(max_length=2, choices=VEG_TYPES, default="?")
-    #ingredients = models.CharField(max_length=400, null=True, blank=True, default="")
     users = models.ManyToManyField(User, through='UserRecipeRelation')
 
     def __str__(self):
@@ -81,6 +77,7 @@ class Recipe(models.Model):
                 result.append("/".join(map(Ingredient.link, alternative.ingredients.all())))
         return ", ".join(result) or ""
 
+
 COOK_STATUS = [
     ("N", "Never cooked"),
     ("W", "Want to cook"),
@@ -94,17 +91,19 @@ TASTE_STATUS = [
     ("T", "Tasted"),
     ("F", "My favorite dish"),
 ]
+
+
 class UserRecipeRelation(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
     cooked = models.CharField(max_length=1, choices=COOK_STATUS, default="N")
     tasted = models.CharField(max_length=1, choices=TASTE_STATUS, default="N")
 
-
     def __str__(self):
         return f"{self.user} - {self.recipe.title}"
 
-class News (models.Model):
+
+class News(models.Model):
     text = models.CharField(max_length=500)
     date = models.DateField(auto_now_add=True)
 
@@ -112,19 +111,20 @@ class News (models.Model):
         verbose_name_plural = "news"
         ordering = ["-date"]
 
-
     def __str__(self):
         return f"{self.date} {self.text[:40]}..."
 
 
 class Ingredient(models.Model):
     name = models.CharField(max_length=100, unique=True)
+    ingredient_type = models.ForeignKey('IngredientType', on_delete=models.CASCADE, null=True)
 
     def __str__(self):
         return self.name
 
     def link(self):
         return f"<a href='/ingredient/{self.id}'>{self.name}</a>"
+
 
 class IngredientAlternatives(models.Model):
     ingredients = models.ManyToManyField(Ingredient)
@@ -133,3 +133,10 @@ class IngredientAlternatives(models.Model):
 
     def __str__(self):
         return ("(" if self.optional else "") + "/".join(map(str, self.ingredients.all())) + (")" if self.optional else "")
+
+
+class IngredientType(models.Model):
+    name = models.CharField(max_length=100, unique=True)
+
+    def __str__(self):
+        return self.name

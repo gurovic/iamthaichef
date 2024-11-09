@@ -40,6 +40,7 @@ urlpatterns = [
     path('select_cooked/<int:recipe_id>/<str:cooked>', tree.views.select_cooked, name='select_cooked'),
     path('user_recipes/<str:dish_type>', tree.views.user_recipes, name='user_recipes'),
     path('ingredient/<int:ingredient_id>', tree.views.ingredient_dishes, name='ingredient'),
+    path('ingredients', tree.views.ingredient_list, name='ingredients'),
 
     path('login/', tree.views.user_login, name='login'),
     path('logout/', tree.views.logout_view, name='logout'),

@@ -1,0 +1,22 @@
+{% extends "NiceAdmin/template.html" %}
+
+{% block content %}
+    <main id="main" class="main">
+
+    <h1>Ingredients</h1>
+    <ul>
+    {% for ingredient in ingredients %}
+            <li>{{ ingredient.link | safe }}</li>
+        {% endfor %}
+    </ul>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        function cooked_select(recipe_id){
+            var options = {};
+            options.url = "/select_cooked/" + recipe_id + "/" + $('#recipe' + recipe_id + ' option:selected').val();
+            options.method = "get";
+            $.ajax(options);
+        }
+    </script>
+    </main>
+{% endblock %}
