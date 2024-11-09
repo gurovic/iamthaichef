@@ -1,0 +1,56 @@
+{% extends "NiceAdmin/template.html" %}
+
+
+{% block content %}
+    <main id="main" class="main">
+
+    <section class="section dashboard">
+<div class="row">
+  <div>
+      <h1>{{ ingredient.name }}</h1>
+    <ul>
+        {% for recipe in recipes %}
+            <li><strong>{{ recipe.title }}</strong>
+                {% if recipe.link %}(<a href="{{ recipe.link }}">{{ recipe.source }}, {{ recipe.subsource }}</a>)
+                {% else %}
+                   ({{ recipe.source }}, {{ recipe.subsource }})
+                {%  endif %}
+                [{{ recipe.get_vegetarian_display }}]
+                <br><em>{{ recipe.ingredients_string | safe }}</em>
+            </li>
+        {% endfor %}
+    </ul>
+  </div>
+    <!-- Подключаем библиотеку jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Подключаем jsTree -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.10/jstree.min.js"></script>
+
+    <script>
+        $.jstree.defaults.plugins = ['wholerow', 'changed'
+	];
+        $(function () {
+            // Инициализация jsTree
+            $('#tree').jstree({
+                'core' : {
+                    'data' : {
+                        'url' : '/get_tree_data/{{ dish_type }}',  // URL для получения данных об объектах
+                        'data' : function (node) {
+                            return { 'id' : node.id };
+                        }
+                    }
+                }
+            });
+        });
+        $("#tree").on("click", ".jstree-anchor", function(evt)
+        {
+            var link = $(evt.target).attr("href");
+            window.open(link, '_self');
+        });
+    </script>
+      </div>
+    </section>
+
+  </main><!-- End #main -->
+
+{% endblock %}
