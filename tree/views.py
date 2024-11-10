@@ -6,7 +6,7 @@ from django.contrib.auth import logout, authenticate, login
 
 from .forms import LoginForm, UserRegistrationForm
 from . import spreadsheet
-from .models import Category, Recipe, News, UserRecipeRelation, Ingredient, IngredientAlternatives
+from .models import Category, Recipe, News, UserRecipeRelation, Ingredient, IngredientAlternatives, IngredientType
 
 
 def upgrade_ingredients(request):
@@ -213,5 +213,9 @@ def ingredient_dishes(request, ingredient_id):
     return render(request, 'NiceAdmin/ingredient_recipes.html', {'ingredient': ingredient, 'recipes': recipes})
 
 def ingredient_list(request):
-    ingredients = Ingredient.objects.all().order_by('name')
-    return render(request, 'NiceAdmin/ingredients_list.html', {'ingredients': ingredients})
+    ingredient_types = IngredientType.objects.all()
+    result = dict()
+    for object in ingredient_types:
+        ingredients = Ingredient.objects.filter(ingredient_type=object).order_by('name')
+        result[object] = ingredients
+    return render(request, 'NiceAdmin/ingredients_list.html', {'ingredients': result})
