@@ -9,6 +9,7 @@ from . import spreadsheet
 from .models import Category, Recipe, News, UserRecipeRelation, Ingredient, IngredientAlternatives, IngredientType
 
 
+# this view was used once to transfer ingredients from one-string format to db
 def upgrade_ingredients(request):
     recipes = Recipe.objects.all()
     for recipe in recipes:
@@ -32,8 +33,8 @@ def upgrade_ingredients(request):
             ia.save()
             ia.ingredients.set(ingredient_objects)
 
-
     return redirect('/')
+
 
 def get_tree_data(request, dish_type):
     tree_data = []
@@ -68,6 +69,7 @@ def get_tree_data(request, dish_type):
 
 def load_data(request):
     return render(request, 'load_data.html')
+
 
 @require_http_methods(["GET"])
 def bulk_load(request):
@@ -109,6 +111,7 @@ def show_tree(request, dish_type="M"):
                                          'dish_type': dish_type,
                                          'news': News.objects.all()})
 
+
 def show_dish(request, id, dish_type):
     dish = Category.objects.get(pk=id)
     if dish_type == "M":
@@ -147,6 +150,7 @@ def recipe_number(cat):
     cat.save()
     return (result, result_v, result_f, result_s)
 
+
 def refresh_recipe_numbers(request):
     cats = Category.objects.filter(parent=None)
     for cat in cats:
@@ -172,6 +176,42 @@ def user_login(request):
     return render(request, 'account/login.html', {'form': form})
 
 
+def select_cooked(request, recipe_id, cooked):
+    recipe = Recipe.objects.get(id=recipe_id)
+    recipe.users.remove(request.user)
+    recipe.users.add(request.user, through_defaults={"cooked":cooked})
+    recipe.save()
+    return HttpResponse()
+
+
+def user_recipes(request, dish_type):
+    user_recipes = request.user.userreciperelation_set.all()
+    return render(request, 'NiceAdmin/user_recipes.html', {'dish_type': dish_type, 'user_recipes': user_recipes})
+
+
+def ingredient_dishes(request, ingredient_id):
+    ingredient = Ingredient.objects.get(pk=ingredient_id)
+    print(1, ingredient.name)
+    alternatives = IngredientAlternatives.objects.filter(ingredients=ingredient_id)
+    recipes = []
+    for alternative in alternatives:
+        recipes.append(alternative.recipe)
+    return render(request, 'NiceAdmin/ingredient_recipes.html', {'ingredient': ingredient, 'recipes': recipes})
+
+
+def ingredient_list(request):
+    ingredient_types = IngredientType.objects.all()
+    result = dict()
+    for object in ingredient_types:
+        ingredients = Ingredient.objects.filter(ingredient_type=object).order_by('name')
+        result[object] = ingredients
+    return render(request, 'NiceAdmin/ingredients_list.html', {'ingredients': result})
+
+
+def logout_view(request):
+    logout(request)
+    return redirect('/')
+
 
 def register(request):
     if request.method == 'POST':
@@ -187,35 +227,3 @@ def register(request):
     else:
         user_form = UserRegistrationForm()
     return render(request, 'account/register.html', {'user_form': user_form})
-
-def select_cooked(request, recipe_id, cooked):
-    recipe = Recipe.objects.get(id=recipe_id)
-    recipe.users.remove(request.user)
-    recipe.users.add(request.user, through_defaults={"cooked":cooked})
-    recipe.save()
-    return HttpResponse()
-
-def logout_view(request):
-    logout(request)
-    return redirect('/')
-
-def user_recipes(request, dish_type):
-    user_recipes = request.user.userreciperelation_set.all()
-    return render(request, 'NiceAdmin/user_recipes.html', {'dish_type': dish_type, 'user_recipes': user_recipes})
-
-def ingredient_dishes(request, ingredient_id):
-    ingredient = Ingredient.objects.get(pk=ingredient_id)
-    print(1, ingredient.name)
-    alternatives = IngredientAlternatives.objects.filter(ingredients=ingredient_id)
-    recipes = []
-    for alternative in alternatives:
-        recipes.append(alternative.recipe)
-    return render(request, 'NiceAdmin/ingredient_recipes.html', {'ingredient': ingredient, 'recipes': recipes})
-
-def ingredient_list(request):
-    ingredient_types = IngredientType.objects.all()
-    result = dict()
-    for object in ingredient_types:
-        ingredients = Ingredient.objects.filter(ingredient_type=object).order_by('name')
-        result[object] = ingredients
-    return render(request, 'NiceAdmin/ingredients_list.html', {'ingredients': result})
