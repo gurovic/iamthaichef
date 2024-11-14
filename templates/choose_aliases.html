@@ -1,0 +1,31 @@
+<form method="POST" action="/bulk-prepare/">
+    {% csrf_token %}
+    <input type="hidden" name="alias_names" value="{{ alias_names }}">
+    {% for alias in aliases %}
+        <p><label><strong>{{ alias.name }}</strong></label>
+        {% for variant in alias.variants %}
+            <label>
+                <br><input type="radio" name="{{ alias.name }}" value="{{ variant }}">{{ variant }}
+            </label>
+        {%  endfor %}
+        <br><input type="radio" name="{{ alias.name }}" value="other">Другое:
+        <select name="{{ alias.name }}_other"}}">
+            {% for option in ingredient_objects %}
+                <option value="{{ option.id}}">{{ option.name }}</option>
+            {% endfor %}
+        </select>
+        <br><input type="radio" name="{{ alias.name }}" value="other_id">Другое (по id ингредиента):
+        <input type="text" name="{{  alias.name }}_other_id" value="">
+        <br><input type="radio" name="{{ alias.name }}" value="new">Новый ингредиент:
+        <input type="text" name="{{ alias.name }}_new" value="">
+        Категория:
+        <select name="{{ alias.name }}_type">
+            {% for category in categories %}
+                <option value="{{ category.id}}">{{ category.name }}</option>
+            {% endfor %}
+        </select>
+
+    {% endfor %}
+    </p>
+    <p><input type="Submit"></p>
+</form>

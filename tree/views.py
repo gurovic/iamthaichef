@@ -1,3 +1,4 @@
+import difflib
 from django.shortcuts import render, redirect
 from django.views.decorators.http import require_http_methods
 from django.http import JsonResponse, HttpResponse
@@ -6,7 +7,8 @@ from django.contrib.auth import logout, authenticate, login
 
 from .forms import LoginForm, UserRegistrationForm
 from . import spreadsheet
-from .models import Category, Recipe, News, UserRecipeRelation, Ingredient, IngredientAlternatives, IngredientType
+from .models import (Category, Recipe, News, UserRecipeRelation, Ingredient, IngredientAlternatives,
+                     IngredientType, IngredientAlias)
 
 
 # this view was used once to transfer ingredients from one-string format to db
@@ -85,7 +87,7 @@ def bulk_load(request):
     # column 9 -> recipe.category.thai_transcription_name
     # column 11 -> recipe.category.parent
 
-    # column 14 -> recipe.ingredients
+    # column 14 -> INGREDIENTS model
     for line in spreadsheet.get_data(request.GET['start_line'], request.GET['finish_line']):
         # line[11](L) != "" or line[7](H) == "-"
         if line[7] != '-':
@@ -109,6 +111,58 @@ def bulk_load(request):
         recipe.save()
 
     return redirect('/')
+
+def prepare_data(request):
+    return render(request, 'prepare_data.html')
+
+
+def bulk_prepare(request):
+    if request.method == "GET":
+        new_ingredients = []
+        ingredients = Ingredient.objects.all().values_list('name', flat=True)
+        ingredient_objects = Ingredient.objects.all()
+        ingredients_aliases = IngredientAlias.objects.all().values_list('name', flat=True)
+        categories = IngredientType.objects.all()
+        for line in spreadsheet.get_data(request.GET['start_line'], request.GET['finish_line']):
+            data : str = line[14].replace('.', ',').lower()
+            ingredient_alternatives = list(map(str.strip, data.split(',')))
+            for alternative in ingredient_alternatives:
+                alternative = alternative.replace("(", "")
+                alternative = alternative.replace(")", "")
+                if alternative and alternative[0] == "(":
+                    alternative = alternative[1:-1]
+                new_ingredients += alternative.split('/')
+
+        aliases = list()
+        alias_names = list()
+        print(list(ingredients) + list(ingredients_aliases))
+        for new_ingredient in set(new_ingredients):
+            if new_ingredient not in list(ingredients) + list(ingredients_aliases):
+                suggestions = difflib.get_close_matches(new_ingredient, ingredients)
+                alias_names += [new_ingredient]
+                aliases += [{'name': new_ingredient, "variants": suggestions}]
+        return render(request, 'choose_aliases.html', {'aliases': aliases,
+                                                       'alias_names': alias_names,
+                                                       'ingredient_objects': ingredient_objects,
+                                                       'categories': categories})
+    else:
+        aliases = request.POST["alias_names"]
+        print(aliases)
+        for alias_name in aliases.replace('[','').replace(']','').split(', '):
+            alias_name = alias_name.strip("'")
+            if alias_name in request.POST:
+                if request.POST[alias_name] == 'other':
+                    IngredientAlias(name=alias_name, ingredient_id=int(request.POST[alias_name+"_other"])).save()
+                elif request.POST[alias_name] == 'other_id':
+                    IngredientAlias(name=alias_name, ingredient_id=int(request.POST[alias_name+"_other_id"])).save()
+                elif request.POST[alias_name] == 'new':
+                    ingredient = Ingredient(name=request.POST[alias_name + "_new"],
+                                            ingredient_type=IngredientType.objects.get(pk=request.POST[alias_name + "_type"]))
+                    ingredient.save()
+                    IngredientAlias(name=alias_name, ingredient=ingredient).save()
+                else:    # new alias
+                    IngredientAlias(name=alias_name, ingredient=Ingredient.objects.get(name=request.POST[alias_name])).save()
+        return redirect('/')
 
 
 def show_tree(request, dish_type="M"):

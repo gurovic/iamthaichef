@@ -27,7 +27,9 @@ urlpatterns = [
     path('admin/', admin.site.urls),
 
     path('load-data', tree.views.load_data),
+    path('prepare-data', tree.views.prepare_data),
     path('bulk-load/', tree.views.bulk_load),
+    path('bulk-prepare/', tree.views.bulk_prepare),
     path('upgrade-ingredients', tree.views.upgrade_ingredients),
 
 
