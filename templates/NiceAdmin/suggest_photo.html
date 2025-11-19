@@ -36,27 +36,27 @@
                             <div class="mb-3">
                                 <label class="form-label">Photo Type (select all that apply)</label>
                                 <div class="form-check">
-                                    {{ form.is_restaurant_dish }}
-                                    <label class="form-check-label" for="{{ form.is_restaurant_dish.id_for_label }}">
-                                        {{ form.is_restaurant_dish.label }}
+                                    <input type="checkbox" name="is_restaurant_dish" id="id_is_restaurant_dish" class="form-check-input">
+                                    <label class="form-check-label" for="id_is_restaurant_dish">
+                                        Restaurant dish photo
                                     </label>
                                 </div>
                                 <div class="form-check">
-                                    {{ form.is_handmade }}
-                                    <label class="form-check-label" for="{{ form.is_handmade.id_for_label }}">
-                                        {{ form.is_handmade.label }}
+                                    <input type="checkbox" name="is_handmade" id="id_is_handmade" class="form-check-input">
+                                    <label class="form-check-label" for="id_is_handmade">
+                                        Handmade photo
                                     </label>
                                 </div>
                                 <div class="form-check">
-                                    {{ form.is_ingredients_process }}
-                                    <label class="form-check-label" for="{{ form.is_ingredients_process.id_for_label }}">
-                                        {{ form.is_ingredients_process.label }}
+                                    <input type="checkbox" name="is_ingredients_process" id="id_is_ingredients_process" class="form-check-input">
+                                    <label class="form-check-label" for="id_is_ingredients_process">
+                                        Ingredients/cooking process photo
                                     </label>
                                 </div>
                                 <div class="form-check">
-                                    {{ form.is_main_photo }}
-                                    <label class="form-check-label" for="{{ form.is_main_photo.id_for_label }}">
-                                        {{ form.is_main_photo.label }}
+                                    <input type="checkbox" name="is_main_photo" id="id_is_main_photo" class="form-check-input">
+                                    <label class="form-check-label" for="id_is_main_photo">
+                                        Main photo
                                     </label>
                                 </div>
                             </div>
