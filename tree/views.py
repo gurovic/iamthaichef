@@ -289,7 +289,8 @@ def register(request):
 
 
 def recipe_detail(request, recipe_id):
-    recipe = Recipe.objects.get(pk=recipe_id)
+    from django.shortcuts import get_object_or_404
+    recipe = get_object_or_404(Recipe, pk=recipe_id)
     approved_photos = recipe.photos.filter(status='approved')
     
     if not request.user.is_anonymous:
@@ -306,7 +307,8 @@ def recipe_detail(request, recipe_id):
 
 
 def suggest_recipe_photo(request, recipe_id):
-    recipe = Recipe.objects.get(pk=recipe_id)
+    from django.shortcuts import get_object_or_404
+    recipe = get_object_or_404(Recipe, pk=recipe_id)
     
     if request.user.is_anonymous:
         return redirect('/login/')
