@@ -43,9 +43,16 @@ urlpatterns = [
     path('user_recipes/<str:dish_type>', tree.views.user_recipes, name='user_recipes'),
     path('ingredient/<int:ingredient_id>', tree.views.ingredient_dishes, name='ingredient'),
     path('ingredients', tree.views.ingredient_list, name='ingredients'),
+    
+    path('recipe/<int:recipe_id>', tree.views.recipe_detail, name='recipe_detail'),
+    path('recipe/<int:recipe_id>/suggest-photo', tree.views.suggest_recipe_photo, name='suggest_photo'),
 
     path('login/', tree.views.user_login, name='login'),
     path('logout/', tree.views.logout_view, name='logout'),
     path('register/', tree.views.register, name='register'),
-] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 

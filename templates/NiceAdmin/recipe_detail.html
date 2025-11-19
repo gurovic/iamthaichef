@@ -1,0 +1,91 @@
+{% extends "NiceAdmin/template.html" %}
+
+{% block content %}
+    <main id="main" class="main">
+
+    <h1>{{ recipe.title }}</h1>
+    
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Recipe Information</h5>
+            
+            <p><strong>Source:</strong> 
+                {% if recipe.link %}
+                    <a href="{{ recipe.link }}">{{ recipe.source }}, {{ recipe.subsource }}</a>
+                {% else %}
+                    {{ recipe.source }}, {{ recipe.subsource }}
+                {% endif %}
+            </p>
+            
+            <p><strong>Category:</strong> {{ recipe.category }}</p>
+            <p><strong>Type:</strong> {{ recipe.get_vegetarian_display }}</p>
+            
+            {% if recipe.ingredients_string %}
+            <p><strong>Ingredients:</strong><br>
+                <em>{{ recipe.ingredients_string|safe }}</em>
+            </p>
+            {% endif %}
+            
+            {% if not user.is_anonymous %}
+            <form style="margin-top: 20px;">
+                <label for="cooked"><strong>My status:</strong></label>
+                <select name="cooked" id="recipe{{ recipe.id }}" class="cooked form-select" style="width: auto; display: inline-block;" onchange="cooked_select({{ recipe.id }})">
+                    <option value="N" {% if recipe.cooked == "N" %}selected{% endif %}>Never cooked</option>
+                    <option value="W" {% if recipe.cooked == "W" %}selected{% endif %}>Want to cook</option>
+                    <option value="C" {% if recipe.cooked == "C" %}selected{% endif %}>Cooked</option>
+                    <option value="S" {% if recipe.cooked == "S" %}selected{% endif %}>My signature dish</option>
+                </select>
+            </form>
+            {% endif %}
+        </div>
+    </div>
+
+    {% if photos %}
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Photos</h5>
+            <div class="row">
+                {% for photo in photos %}
+                <div class="col-md-4 mb-3">
+                    <div class="card">
+                        <img src="{{ photo.image.url }}" class="card-img-top" alt="{{ recipe.title }}">
+                        <div class="card-body">
+                            <p class="card-text">
+                                <small class="text-muted">By {{ photo.user.username }}</small>
+                                {% if photo.is_main_photo %}<br><span class="badge bg-primary">Main Photo</span>{% endif %}
+                                {% if photo.is_restaurant_dish %}<br><span class="badge bg-success">Restaurant</span>{% endif %}
+                                {% if photo.is_handmade %}<br><span class="badge bg-info">Handmade</span>{% endif %}
+                                {% if photo.is_ingredients_process %}<br><span class="badge bg-warning">Ingredients/Process</span>{% endif %}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    {% if not user.is_anonymous %}
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Share Your Photo</h5>
+            <p>Have a photo of this recipe? Share it with the community!</p>
+            <a href="{% url 'suggest_photo' recipe.id %}" class="btn btn-primary">
+                <i class="bi bi-camera"></i> Suggest Photo
+            </a>
+        </div>
+    </div>
+    {% endif %}
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        function cooked_select(recipe_id){
+            var options = {};
+            options.url = "/select_cooked/" + recipe_id + "/" + $('#recipe' + recipe_id + ' option:selected').val();
+            options.method = "get";
+            $.ajax(options);
+        }
+    </script>
+    </main>
+{% endblock %}

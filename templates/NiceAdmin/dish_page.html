@@ -13,7 +13,7 @@
     <h4>Recipes</h4>
     <ul>
         {% for recipe in recipes %}
-            <li><strong>{{ recipe.title }}</strong>
+            <li><strong><a href="{% url 'recipe_detail' recipe.id %}">{{ recipe.title }}</a></strong>
                 {% if recipe.link %}(<a href="{{ recipe.link }}">{{ recipe.source }}, {{ recipe.subsource }}</a>)
                 {% else %}
                    ({{ recipe.source }}, {{ recipe.subsource }})

@@ -148,3 +148,28 @@ class IngredientAlias(models.Model):
 
     def __str__(self):
         return f"{self.name} ({self.ingredient.name})"
+
+
+PHOTO_STATUS = [
+    ("suggested", "Suggested"),
+    ("approved", "Approved"),
+    ("canceled", "Canceled"),
+]
+
+
+class RecipePhoto(models.Model):
+    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, related_name='photos')
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    image = models.ImageField(upload_to='recipe_photos/')
+    status = models.CharField(max_length=20, choices=PHOTO_STATUS, default="suggested")
+    is_restaurant_dish = models.BooleanField(default=False, verbose_name="Restaurant dish photo")
+    is_handmade = models.BooleanField(default=False, verbose_name="Handmade photo")
+    is_ingredients_process = models.BooleanField(default=False, verbose_name="Ingredients/cooking process photo")
+    is_main_photo = models.BooleanField(default=False, verbose_name="Main photo")
+    upload_date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.recipe.title} - {self.user.username} ({self.status})"
+
+    class Meta:
+        ordering = ['-upload_date']

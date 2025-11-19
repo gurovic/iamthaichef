@@ -5,10 +5,10 @@ from django.http import JsonResponse, HttpResponse
 from django.db.models import Q
 from django.contrib.auth import logout, authenticate, login
 
-from .forms import LoginForm, UserRegistrationForm
+from .forms import LoginForm, UserRegistrationForm, RecipePhotoForm
 from . import spreadsheet
 from .models import (Category, Recipe, News, UserRecipeRelation, Ingredient, IngredientAlternatives,
-                     IngredientType, IngredientAlias)
+                     IngredientType, IngredientAlias, RecipePhoto)
 
 
 # this view was used once to transfer ingredients from one-string format to db
@@ -286,3 +286,44 @@ def register(request):
     else:
         user_form = UserRegistrationForm()
     return render(request, 'account/register.html', {'user_form': user_form})
+
+
+def recipe_detail(request, recipe_id):
+    recipe = Recipe.objects.get(pk=recipe_id)
+    approved_photos = recipe.photos.filter(status='approved')
+    
+    if not request.user.is_anonymous:
+        cooked = UserRecipeRelation.objects.filter(user=request.user, recipe=recipe).values('cooked')
+        if cooked:
+            recipe.cooked = cooked[0]['cooked']
+        else:
+            recipe.cooked = 'N'
+    
+    return render(request, 'NiceAdmin/recipe_detail.html', {
+        'recipe': recipe,
+        'photos': approved_photos
+    })
+
+
+def suggest_recipe_photo(request, recipe_id):
+    recipe = Recipe.objects.get(pk=recipe_id)
+    
+    if request.user.is_anonymous:
+        return redirect('/login/')
+    
+    if request.method == 'POST':
+        form = RecipePhotoForm(request.POST, request.FILES)
+        if form.is_valid():
+            photo = form.save(commit=False)
+            photo.recipe = recipe
+            photo.user = request.user
+            photo.status = 'suggested'
+            photo.save()
+            return redirect('recipe_detail', recipe_id=recipe_id)
+    else:
+        form = RecipePhotoForm()
+    
+    return render(request, 'NiceAdmin/suggest_photo.html', {
+        'form': form,
+        'recipe': recipe
+    })

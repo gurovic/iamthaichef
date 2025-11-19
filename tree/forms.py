@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
+from .models import RecipePhoto
 
 
 class LoginForm(forms.Form):
@@ -20,3 +21,18 @@ class UserRegistrationForm(forms.ModelForm):
         if cd['password'] != cd['password2']:
             raise forms.ValidationError('Passwords don\'t match.')
         return cd['password2']
+
+
+class RecipePhotoForm(forms.ModelForm):
+    class Meta:
+        model = RecipePhoto
+        fields = ['image', 'is_restaurant_dish', 'is_handmade', 'is_ingredients_process', 'is_main_photo']
+        widgets = {
+            'image': forms.FileInput(attrs={'accept': 'image/*', 'class': 'form-control'}),
+        }
+        labels = {
+            'is_restaurant_dish': 'Restaurant dish photo',
+            'is_handmade': 'Handmade photo',
+            'is_ingredients_process': 'Ingredients/cooking process photo',
+            'is_main_photo': 'Main photo',
+        }
