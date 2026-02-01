@@ -278,7 +278,7 @@ def get_ingredients_tree_data(request):
             'id': f"type_{ingredient_type.id}",
             'parent': '#',  # корневой уровень
             'text': ingredient_type.name,
-            'state': {'opened': True},
+            'state': {'opened': False},  # изменено на False для свертывания по умолчанию
             'icon': 'bi bi-folder'
         })
 
