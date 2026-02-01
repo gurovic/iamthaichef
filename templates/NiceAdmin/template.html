@@ -32,6 +32,35 @@
   <!-- Template Main CSS File -->
   <link href="/assets/css/style.css" rel="stylesheet">
 
+  <!-- Custom styles for vegetarian icons -->
+  <style>
+    .veg-icon-container {
+      display: inline-block;
+      width: 1em;
+      height: 1em;
+      position: relative;
+      margin-right: 0.25em;
+      vertical-align: middle;
+    }
+
+    .veg-icon {
+      font-family: "bootstrap-icons" !important;
+      font-style: normal;
+      font-weight: normal !important;
+      font-variant: normal;
+      text-transform: none;
+      line-height: 1;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    .veg-icon.veg::before { content: "\f43d"; } /* leaf icon */
+    .veg-icon.fish::before { content: "\f35e"; } /* fish icon */
+    .veg-icon.seafood::before { content: "\f529"; } /* shell icon */
+    .veg-icon.meat::before { content: "\f32d"; } /* egg-fried icon */
+    .veg-icon.unknown::before { content: "\f2fd"; } /* question-circle icon */
+  </style>
+
   <!-- =======================================================
   * Template Name: NiceAdmin
   * Template URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/

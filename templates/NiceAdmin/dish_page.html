@@ -18,17 +18,19 @@
                 {% else %}
                    ({{ recipe.source }}, {{ recipe.subsource }})
                 {%  endif %}
+                <span class="veg-icon-container">
                 {% if recipe.vegetarian == "V" %}
-                <span class="bi bi-leaf" title="Vegetarian" style="display: inline-block; width: 1em; height: 1em;"></span>
+                <span class="veg-icon veg" title="Vegetarian"></span>
                 {% elif recipe.vegetarian == "F" %}
-                <span class="bi bi-fish" title="With fish" style="display: inline-block; width: 1em; height: 1em;"></span>
+                <span class="veg-icon fish" title="With fish"></span>
                 {% elif recipe.vegetarian == "S" %}
-                <span class="bi bi-shell" title="With seafood" style="display: inline-block; width: 1em; height: 1em;"></span>
+                <span class="veg-icon seafood" title="With seafood"></span>
                 {% elif recipe.vegetarian == "M" %}
-                <span class="bi bi-egg-fried" title="With meat" style="display: inline-block; width: 1em; height: 1em;"></span>
+                <span class="veg-icon meat" title="With meat"></span>
                 {% else %}
-                <span class="bi bi-question-circle" title="No info" style="display: inline-block; width: 1em; height: 1em;"></span>
+                <span class="veg-icon unknown" title="No info"></span>
                 {% endif %}
+                </span>
                 <br><em>{{ recipe.ingredients_string |safe }}</em>
             {%  if not user.is_anonymous %}
             <form>
