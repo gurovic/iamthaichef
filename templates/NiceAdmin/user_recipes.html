@@ -34,6 +34,8 @@
                 <span title="With seafood" style="color: teal;">&#128026</span> <!-- Shellfish -->
                 {% elif userrecipe.recipe.vegetarian == "M" %}
                 <span title="With meat" style="color: brown;">&#127835</span> <!-- Poultry leg -->
+                {% elif userrecipe.recipe.vegetarian == "N" %}
+                <span title="Not specified" style="color: orange;">&#127797</span> <!-- Warning sign -->
                 {% else %}
                 <span title="No info" style="color: gray;">&#63</span> <!-- Question mark -->
                 {% endif %}
