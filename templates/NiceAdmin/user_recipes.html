@@ -28,15 +28,15 @@
                 {%  endif %}
                 <span class="veg-icon-container">
                 {% if userrecipe.recipe.vegetarian == "V" %}
-                <span class="veg-icon veg" title="Vegetarian"></span>
+                <i class="veg-icon bi bi-carrot" title="Vegetarian"></i>
                 {% elif userrecipe.recipe.vegetarian == "F" %}
-                <span class="veg-icon fish" title="With fish"></span>
+                <i class="veg-icon bi bi-fish" title="With fish"></i>
                 {% elif userrecipe.recipe.vegetarian == "S" %}
-                <span class="veg-icon seafood" title="With seafood"></span>
+                <i class="veg-icon bi bi-shell" title="With seafood"></i>
                 {% elif userrecipe.recipe.vegetarian == "M" %}
-                <span class="veg-icon meat" title="With meat"></span>
+                <i class="veg-icon bi bi-cup-hot" title="With meat"></i>
                 {% else %}
-                <span class="veg-icon unknown" title="No info"></span>
+                <i class="veg-icon bi bi-question-circle" title="No info"></i>
                 {% endif %}
                 </span>
                 {% if userrecipe.recipe.ingredients %}
