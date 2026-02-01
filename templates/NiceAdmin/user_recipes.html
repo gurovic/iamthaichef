@@ -27,15 +27,15 @@
                    ({{ userrecipe.recipe.source }}, {{ userrecipe.recipe.subsource }})
                 {%  endif %}
                 {% if userrecipe.recipe.vegetarian == "V" %}
-                <i class="bi bi-leaf veg-icon" title="Vegetarian"></i>
+                <span class="bi bi-leaf" title="Vegetarian" style="display: inline-block; width: 1em; height: 1em;"></span>
                 {% elif userrecipe.recipe.vegetarian == "F" %}
-                <i class="bi bi-fish veg-icon" title="With fish"></i>
+                <span class="bi bi-fish" title="With fish" style="display: inline-block; width: 1em; height: 1em;"></span>
                 {% elif userrecipe.recipe.vegetarian == "S" %}
-                <i class="bi bi-shell veg-icon" title="With seafood"></i>
+                <span class="bi bi-shell" title="With seafood" style="display: inline-block; width: 1em; height: 1em;"></span>
                 {% elif userrecipe.recipe.vegetarian == "M" %}
-                <i class="bi bi-egg-fried veg-icon" title="With meat"></i>
+                <span class="bi bi-egg-fried" title="With meat" style="display: inline-block; width: 1em; height: 1em;"></span>
                 {% else %}
-                <i class="bi bi-question-circle veg-icon" title="No info"></i>
+                <span class="bi bi-question-circle" title="No info" style="display: inline-block; width: 1em; height: 1em;"></span>
                 {% endif %}
                 {% if userrecipe.recipe.ingredients %}
                     <br><em>{{ userrecipe.recipe.ingredients }}</em>
