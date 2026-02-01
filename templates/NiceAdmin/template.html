@@ -57,6 +57,9 @@
 
     <nav class="header-nav ms-auto">
       <ul class="d-flex align-items-center">
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'ingredients' %}">Ingredients</a>
+        </li>
         {%  if not user.is_anonymous %}
         <li class="nav-item dropdown pe-3">
 
