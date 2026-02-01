@@ -26,7 +26,17 @@
                 {% else %}
                    ({{ userrecipe.recipe.source }}, {{ userrecipe.recipe.subsource }})
                 {%  endif %}
-                [{{ userrecipe.recipe.get_vegetarian_display }}]
+                {% if userrecipe.recipe.vegetarian == "V" %}
+                <i class="bi bi-leaf" title="Vegetarian"></i>
+                {% elif userrecipe.recipe.vegetarian == "F" %}
+                <i class="bi bi-fish" title="With fish"></i>
+                {% elif userrecipe.recipe.vegetarian == "S" %}
+                <i class="bi bi-droplet" title="With seafood"></i>
+                {% elif userrecipe.recipe.vegetarian == "M" %}
+                <i class="bi bi-cup-straw" title="With meat"></i>
+                {% else %}
+                <i class="bi bi-question-circle" title="No info"></i>
+                {% endif %}
                 {% if userrecipe.recipe.ingredients %}
                     <br><em>{{ userrecipe.recipe.ingredients }}</em>
                 {% endif %}

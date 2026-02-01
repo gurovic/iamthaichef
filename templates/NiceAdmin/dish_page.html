@@ -18,7 +18,17 @@
                 {% else %}
                    ({{ recipe.source }}, {{ recipe.subsource }})
                 {%  endif %}
-                [{{ recipe.get_vegetarian_display }}]
+                {% if recipe.vegetarian == "V" %}
+                <i class="bi bi-leaf" title="Vegetarian"></i>
+                {% elif recipe.vegetarian == "F" %}
+                <i class="bi bi-fish" title="With fish"></i>
+                {% elif recipe.vegetarian == "S" %}
+                <i class="bi bi-droplet" title="With seafood"></i>
+                {% elif recipe.vegetarian == "M" %}
+                <i class="bi bi-cup-straw" title="With meat"></i>
+                {% else %}
+                <i class="bi bi-question-circle" title="No info"></i>
+                {% endif %}
                 <br><em>{{ recipe.ingredients_string |safe }}</em>
             {%  if not user.is_anonymous %}
             <form>
