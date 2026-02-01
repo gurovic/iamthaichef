@@ -26,19 +26,17 @@
                 {% else %}
                    ({{ userrecipe.recipe.source }}, {{ userrecipe.recipe.subsource }})
                 {%  endif %}
-                <span class="veg-icon-container">
                 {% if userrecipe.recipe.vegetarian == "V" %}
-                <i class="veg-icon bi bi-carrot" title="Vegetarian"></i>
+                <span title="Vegetarian" style="color: green;">&#127811</span> <!-- Carrot -->
                 {% elif userrecipe.recipe.vegetarian == "F" %}
-                <i class="veg-icon bi bi-fish" title="With fish"></i>
+                <span title="With fish" style="color: blue;">&#128031</span> <!-- Fish -->
                 {% elif userrecipe.recipe.vegetarian == "S" %}
-                <i class="veg-icon bi bi-shell" title="With seafood"></i>
+                <span title="With seafood" style="color: teal;">&#128026</span> <!-- Shellfish -->
                 {% elif userrecipe.recipe.vegetarian == "M" %}
-                <i class="veg-icon bi bi-cup-hot" title="With meat"></i>
+                <span title="With meat" style="color: brown;">&#129386</span> <!-- Cut of meat -->
                 {% else %}
-                <i class="veg-icon bi bi-question-circle" title="No info"></i>
+                <span title="No info" style="color: gray;">&#63</span> <!-- Question mark -->
                 {% endif %}
-                </span>
                 {% if userrecipe.recipe.ingredients %}
                     <br><em>{{ userrecipe.recipe.ingredients }}</em>
                 {% endif %}
