@@ -3,30 +3,56 @@
 {% block content %}
     <main id="main" class="main">
 
-    <h1>Ingredients</h1>
-    <div class="accordion" id="ingredientsAccordion">
-    {% for ingredient_type, ingredient_list in ingredients.items %}
-        <div class="accordion-item">
-            <h2 class="accordion-header" id="heading{{ forloop.counter }}">
-                <button class="accordion-button {% if forloop.first %}{% else %}collapsed{% endif %}" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ forloop.counter }}" aria-expanded="{% if forloop.first %}true{% else %}false{% endif %}" aria-controls="collapse{{ forloop.counter }}">
-                    {{ ingredient_type }}
-                </button>
-            </h2>
-            <div id="collapse{{ forloop.counter }}" class="accordion-collapse collapse {% if forloop.first %}show{% endif %}" aria-labelledby="heading{{ forloop.counter }}" data-bs-parent="#ingredientsAccordion">
-                <div class="accordion-body">
-                    <ul class="list-unstyled">
-                        {% for ingredient in ingredient_list %}
-                        <li>{{ ingredient.link | safe }}</li>
-                        {% endfor %}
-                    </ul>
-                </div>
-            </div>
-        </div>
-    {% endfor %}
+    <div class="pagetitle">
+      <h1>Ingredients</h1>
     </div>
 
+    <section class="section dashboard">
+      <div class="row">
+        <div class="col-12">
+          <div class="card recent-sales overflow-auto">
+            <div class="card-body">
+              <div id="ingredients-tree"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Подключаем библиотеку jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Подключаем jsTree -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.10/jstree.min.js"></script>
+
     <script>
+        $.jstree.defaults.plugins = ['wholerow', 'changed'];
+        $(function () {
+            // Инициализация jsTree с получением данных через AJAX
+            $('#ingredients-tree').jstree({
+                'core' : {
+                    'data' : {
+                        'url' : '{% url 'get_ingredients_tree_data' %}',
+                        'data' : function (node) {
+                            return { 'id' : node.id };
+                        }
+                    },
+                    'themes' : {
+                        'name' : 'default',
+                        'responsive' : true
+                    }
+                },
+                "plugins" : ["wholerow", "changed"]
+            });
+        });
+
+        $("#ingredients-tree").on("click", ".jstree-anchor", function(evt)
+        {
+            var link = $(evt.target).attr("href");
+            if(link && link !== undefined && link !== '#') {
+                window.open(link, '_self');
+            }
+        });
+
         function cooked_select(recipe_id){
             var options = {};
             options.url = "/select_cooked/" + recipe_id + "/" + $('#recipe' + recipe_id + ' option:selected').val();

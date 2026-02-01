@@ -36,6 +36,7 @@ urlpatterns = [
     path('refresh', tree.views.refresh_recipe_numbers),
 
     path('get_tree_data/<str:dish_type>', tree.views.get_tree_data, name='get_tree_data'),
+    path('get_ingredients_tree_data/', tree.views.get_ingredients_tree_data, name='get_ingredients_tree_data'),
     path('dish/<int:id>/<str:dish_type>', tree.views.show_dish, name='dish'),
     path('tree/<str:dish_type>', tree.views.show_tree, name="tree"),
     path('', tree.views.show_tree, name='index'),

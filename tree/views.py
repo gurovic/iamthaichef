@@ -267,6 +267,37 @@ def ingredient_list(request):
     return render(request, 'NiceAdmin/ingredients_list.html', {'ingredients': result})
 
 
+def get_ingredients_tree_data(request):
+    """Возвращает данные ингредиентов в формате, подходящем для jsTree"""
+    tree_data = []
+
+    # Добавляем типы ингредиентов как родительские узлы
+    ingredient_types = IngredientType.objects.all()
+    for ingredient_type in ingredient_types:
+        tree_data.append({
+            'id': f"type_{ingredient_type.id}",
+            'parent': '#',  # корневой уровень
+            'text': ingredient_type.name,
+            'state': {'opened': True},
+            'icon': 'bi bi-folder'
+        })
+
+        # Добавляем ингредиенты как дочерние узлы
+        ingredients = Ingredient.objects.filter(ingredient_type=ingredient_type).order_by('name')
+        for ingredient in ingredients:
+            tree_data.append({
+                'id': f"ingredient_{ingredient.id}",
+                'parent': f"type_{ingredient_type.id}",
+                'text': ingredient.name,
+                'icon': 'bi bi-file-earmark',
+                'a_attr': {
+                    'href': f'/ingredient/{ingredient.id}'
+                }
+            })
+
+    return JsonResponse(tree_data, safe=False)
+
+
 def logout_view(request):
     logout(request)
     return redirect('/')
